@@ -1,1 +1,1 @@
-# UIC-CS141-Public
+# UIC CS 141 Fall 2026
