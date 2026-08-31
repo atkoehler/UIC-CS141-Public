@@ -189,30 +189,18 @@ void trimEnd(string &word)
 /// @param word the string to look for in the data
 /// @return true when the word exists in the data, false otherwise
 // TODO - exists
-bool exists(const vector<string> &data, const string &word)
-{
-    return false;
-}
 
 
 /// @brief Count the quantity of non-vowel characters in the data.
 /// @param data the vector containing all the strings of data
 /// @return the quantity of non-vowel characters in the data
 // TODO - countNonVowels
-int countNonVowels(const vector<string> &data)
-{
-    return 0;
-}
 
 
 /// @brief Count the quantity of vowel characters in the data.
 /// @param data the vector containing all the strings of data
 /// @return the quantity of vowel characters in the data
 // TODO - countVowels
-int countVowels(const vector<string> &data)
-{
-    return 0;
-}
 
 
 
