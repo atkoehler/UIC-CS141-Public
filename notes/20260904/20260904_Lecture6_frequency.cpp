@@ -1,6 +1,6 @@
-/// @file 20260902_Lecture5_frequency.cpp
+/// @file 20260904_Lecture6_frequency.cpp
 /// @author Adam T Koehler, PhD
-/// @date September 2, 2026
+/// @date September 4, 2026
 /// @brief Code and lecture notes from the live lecture. 
 ///     Some code may require -std=c++23
 
@@ -35,7 +35,7 @@ bool isVowel(char);
 bool isLower(const string &);
 void trimEnd(string &);
 
-// 9/2 Activity Options
+// 9/4 Activity Options
 bool exists(const vector<string> &, const string &);
 int countNonVowels(const vector<string> &);
 int countVowels(const vector<string> &);
@@ -189,30 +189,20 @@ void trimEnd(string &word)
 /// @param word the string to look for in the data
 /// @return true when the word exists in the data, false otherwise
 // TODO - exists
-bool exists(const vector<string> &data, const string &word)
-{
-    return false;
-}
 
 
 /// @brief Count the quantity of non-vowel characters in the data.
 /// @param data the vector containing all the strings of data
 /// @return the quantity of non-vowel characters in the data
 // TODO - countNonVowels
-int countNonVowels(const vector<string> &data)
-{
-    return 0;
-}
+
 
 
 /// @brief Count the quantity of vowel characters in the data.
 /// @param data the vector containing all the strings of data
 /// @return the quantity of vowel characters in the data
 // TODO - countVowels
-int countVowels(const vector<string> &data)
-{
-    return 0;
-}
+
 
 
 
