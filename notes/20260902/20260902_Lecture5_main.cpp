@@ -10,256 +10,120 @@
 #include <string>   // For the C++ string datatype
 #include <vector>   // For using vector containers for many counters
 
-
-using namespace std;
-
-
-///////////////////////////////////////////////////////////////////////////////
-//
-// Incremental development of a Frequency Counter program a pratical   
-// exploration of vectors, counting, strings, branches, and loops within C++.
-//
-// Pairs with Week 2 activities that have develop functions which use strings.
-//
-///////////////////////////////////////////////////////////////////////////////
-
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+using std::vector;
 
 
-// Prototypes for all local functions
-// Implemented in order listed here below main()
-// 8/31 Activity Area 1 Options
-bool isVowel(char);
+void Option1Examples(); 
+void Option2Examples(); 
 
-// 8/31 Activity Area 2 Options
-bool isLower(const string &);
-void trimEnd(string &);
-
-// 9/2 Activity Options
-bool exists(const vector<string> &, const string &);
-int countNonVowels(const vector<string> &);
-int countVowels(const vector<string> &);
-
-// Additional Function Prototypes (Pre-Coded)
-int countVowelStarters(const vector<string> &);
-void printMenu();
-int readData(vector<string> &);
-bool validSize(const string &);
-
-
-/// @brief main function for running our examples
-/// @param argc the number of command line arguments
-/// @param argv the array containing c-strings of command line args
 int main(int argc, char *argv[])
-{    
-    // When testing we can hardcode values into our valid data vector
-    // so that we can test our functions with specific data.
-    vector<string> data = {"my", "name", "bob", "and"};
-
-    // When not testing we want to start with an empty data container.
-    // vector<string> data;
-
-    int option = -1, reads = -1;
-    const int DONE = 6;
-
-    cout << "Frequency Calculator" << endl;
-    cout << "====================" << endl;
-    cout << endl;
-
-    do
-    {   
-        printMenu();
-
-        // Acquire a user option based on the menu
-        cout << "Choose an option: ";
-        cin >> option;
-        cout << endl;
-
-        // Act on the option entered by the user
-        switch(option)
+{
+    // no second command line argument, run all examples
+    if (argc > 1 && isdigit(argv[1][0]))
+    {       
+        switch(atoi(argv[1]))
         {
             case 1:
-                // Future: readData - so we don't hardcode data
+                Option1Examples();   
                 break;
-
             case 2:
-                data.clear();
-                cout << "Data cleared." << endl;
+                Option2Examples();   
                 break;
-
-            case 3:
-                cout << "Found " << countVowels(data) << " vowels." 
-                    << endl;
-                break;
-            case 4:
-                cout << "Found " << countNonVowels(data) << " non-vowels." 
-                    << endl;
-                break;
-
-            case 5:
-                cout << "Found " << countVowelStarters(data) 
-                    << " words that start with vowels." << endl;
-                break;
-
-            case DONE:
-                break;
-
+            
             default:
-                cout << "Invalid Option: " << option << endl;
                 break;
         }
-
-        cout << endl;
-    } while (option != DONE);
-
-
-    cout << "Enjoy your day!" << endl;
-
+    }
+    else
+    {
+        cout << "Specify a case to execute, e.g. ./exeName 1" << endl;
+        cout << "If a.out is the executable we would use: ./a.out 1" << endl;
+    }
     return 0;
 }
 
-
-
-////////////////////////////////////
-//
-// August 31, 2026 Activity Areas
-//
-////////////////////////////////////
-
-
-/// @brief Return whether a character is a vowel or not.
-/// @param c The character to check.
-/// @pre character c is lowercase
-/// @return true when the character is a vowel, otherwise false.
-bool isVowel(char c)
+/// @brief Quiz Based Examples
+void Option1Examples()
 {
-    return 'a' == c || 'e' == c || 'i' == c || 'o' == c || 'u' == c;
+    // Replacing characters in a string
+    string x;
+
+    // Goal: change 'h' to 'j' where 'h' is the first letter in the string
+    // Method 1: use the at() member function
+    x = "hello";
+    cout << "Changing the first letter of a string." << endl;
+    cout << "======================================" << endl;
+    cout << "Using at(0)" << endl;
+    cout << "Before: " << x << endl;
+    x.at(0) = 'j';
+    cout << "After:  " << x << endl;
+
+    // Method 2: use the front() member function
+    x = "hello";
+    cout << endl;
+    cout << "Using front()" << endl;
+    cout << "Before: " << x << endl;
+    x.front() = 'j';
+    cout << "After:  " << x << endl;
+
+    // Method 3: use the replace member function to replace 
+    //           a substring of size 1 starting at 0
+    x = "hello";
+    cout << endl;
+    cout << "Using replace(0, 1, \"j\")" << endl;
+    cout << "Before: " << x << endl;
+    x.replace(0, 1, "j");
+    cout << "After:  " << x << endl;
 }
+ 
 
-
-/// @brief determine whether a string is all lowercase alphabetic characters
-/// @param word the string to check
-/// @return true when all lowercase alphabetic characters, otherwise false
-bool isLower(const string &word)
+void Option2Examples()
 {
-    // iterate over every character in word
-    for(const auto &letter : word)
-    {
-        // return false immediately when not between 'a' and 'z' (inclusive)
-        if (!('a' <= letter && letter <= 'z'))
-        {
-            return false;
-        }
-    }
-    return true;
-}
+    // Chained at() Calls - How many to get to the character data type?
+    cout << "Chaining at() calls in a multi-dimensional vector." << endl;
+    cout << "==================================================" << endl;
+    cout << "Create empty vector and push each row on to it." << endl;
+    // Create an empty 2D vector of strings
+    vector<vector<string>> v;
 
+    // Initialize a single row and place it into the 2D vector
+    // We could also acquire these values one by one and push them into
+    // the row vector one at a time. For simplicity we initialize.
+    cout << "Pushing row with values {\"howdy\", \"hi\"} " << endl << endl;
+    vector<string> greeting = {"howdy", "hi"};
+    v.push_back(greeting);
 
-/// @brief Removes all non-alphabetic characters from the end 
-///        of the provided string.
-/// @param word The string to trim.
-void trimEnd(string &word)
-{
-    // An empty string causes certain fucntions to have undefined behavior.
-    // Therefore we must handle the empty string as an edge case, and for 
-    // our function return immediately because there is nothing to trim.
-    if (word.empty())
-    {
-        return;
-    }
+    // acquire the third character of first word in the first row
+    char c = v.at(0).at(0).at(2);
+    cout << "First row, First string, Third character: " << c << endl;
 
-    // remove all non-alphabetic characters from the end of the string
-    while(!isalpha(word.back()))
-    {
-        word.pop_back();
-    }
-}
+    // We could also do on at() call at a time
+    vector<string> row = v.at(0);
+    string word = row.at(0);
+    char letter = word.at(1);
+    cout << "First row, First string, Second character: " << letter << endl;
 
+    // We could also instantiate the 2D vector of strings immediately
+    cout << endl;
+    cout << "Immediately instantiate our 2D vector of strings." << endl;
+    cout << "Vector will initialize with: " << endl 
+        << "   { {\"wellness\", \"goals\"}" << endl
+        << "     {\"pizza\", \"ice cream\", \"salad\"} }" << endl << endl;
 
-
-
-////////////////////////////////////
-//
-// September 2, 2026 Activity Areas
-//
-////////////////////////////////////
-
-/// @brief determine whether the supplied word already exists in the data
-/// @param data the container of data to check
-/// @param word the string to look for in the data
-/// @return true when the word exists in the data, false otherwise
-// TODO - exists
-bool exists(const vector<string> &data, const string &word)
-{
-    return false;
-}
-
-
-/// @brief Count the quantity of non-vowel characters in the data.
-/// @param data the vector containing all the strings of data
-/// @return the quantity of non-vowel characters in the data
-// TODO - countNonVowels
-int countNonVowels(const vector<string> &data)
-{
-    return 0;
-}
-
-
-/// @brief Count the quantity of vowel characters in the data.
-/// @param data the vector containing all the strings of data
-/// @return the quantity of vowel characters in the data
-// TODO - countVowels
-int countVowels(const vector<string> &data)
-{
-    return 0;
-}
-
-
-
-
-//////////////////////////////////////
-//
-// Given Implementations (pre-coded)
-//
-//////////////////////////////////////
-
-/// @brief Count the quantity of words in the data that start with a vowel.
-/// @param data the vector containing all the strings of data
-/// @return the quantity of words counted that start with a vowel
-int countVowelStarters(const vector<string> &data)
-{
-    int counter = 0;
-
-    // every element in the data
-    for(const auto &e : data)
-    {
-        if (e.size() > 0 && isVowel(e.at(0)))
-        {
-            counter++;
-        }
-    }
+    vector<vector<string>> z = {{"wellness", "goals"}, 
+                                {"pizza", "ice cream", "salad"}};
     
-    return counter; 
-}
+    // acquire the third character of first word in the first row
+    char d = z.at(1).at(2).at(3);
+    cout << "Second row, Third string, Fourth character: " << d << endl;
 
-
-/// @brief output the menu containing all the program options
-void printMenu()
-{
-    cout << "Menu Options" << endl;
-    cout << "1. Read Data" << endl;
-    cout << "2. Clear Data" << endl;
-    cout << "3. Count Vowels" << endl;
-    cout << "4. Count Non-Vowels" << endl;
-    cout << "5. Count words that start with vowels" << endl;
-    cout << "6. Exit" << endl << endl;
-}
-
-/// @brief Determines that a supplied string is a valid size
-/// @param s the string to validate the size of
-/// @return true when the string size if valid, otherwise false
-bool validSize(const string &s)
-{
-    // 5 is the only valid string size    
-    return s.size() == 5;
+    // We could also do on at() call at a time
+    vector<string> r = z.at(0);
+    string w = r.at(1);
+    char ltr = w.at(1);
+    cout << "First row, Second string, Second character: " << d << endl;
 }
