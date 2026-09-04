@@ -16,9 +16,9 @@
     b. index based iteration
 
  5. Two Dimensions and Beyond
- 6. Function: Print 1D Vector Function 
- 8. C++20 Print Elements Function using Span
- 9. C++23 Print Vector with println
+ 6. C++ Legacy Vector Print - Pass by Const Reference
+ 7. C++20 Print Elements Function using Span
+ 8. C++23 Print Vector with println
 
 
 <br>
