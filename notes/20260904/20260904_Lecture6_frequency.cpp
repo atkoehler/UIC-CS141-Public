@@ -11,9 +11,6 @@
 #include <vector>   // For using vector containers for many counters
 
 
-using namespace std;
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Incremental development of a Frequency Counter program a pratical   
@@ -79,7 +76,14 @@ int main(int argc, char *argv[])
         switch(option)
         {
             case 1:
-                // Future: readData - so we don't hardcode data
+                cout << "Reading data..." << endl;
+                data.clear();
+                reads = readData(data);
+                cout << "Data reading complete." << endl << endl;
+
+                cout << "Read in " << reads << " total words." << endl;
+                cout << "Invalid Data: " << reads - data.size() << endl;
+                cout << "Valid Data: " << data.size() << endl;
                 break;
 
             case 2:
@@ -180,7 +184,7 @@ void trimEnd(string &word)
 
 ////////////////////////////////////
 //
-// September 2, 2026 Activity Areas
+// September 4, 2026 Activity Areas
 //
 ////////////////////////////////////
 
@@ -188,31 +192,72 @@ void trimEnd(string &word)
 /// @param data the container of data to check
 /// @param word the string to look for in the data
 /// @return true when the word exists in the data, false otherwise
-// TODO - exists
+/// C++11 "Legacy" pass by const reference
 bool exists(const vector<string> &data, const string &word)
 {
+    // iterate over every word in the data
+    for(const auto &w : data)
+    {
+        // return true upon discovery of the word in the data
+        if (w == word)
+        {
+            return true;
+        }
+    }
     return false;
 }
 
 
-/// @brief Count the quantity of non-vowel characters in the data.
+// @brief Count the quantity of non-vowel characters in the data.
 /// @param data the vector containing all the strings of data
 /// @return the quantity of non-vowel characters in the data
-// TODO - countNonVowels
+/// C++11 "Legacy" pass by const reference
 int countNonVowels(const vector<string> &data)
 {
-    return 0;
+    int counter = 0;
+
+    // iterate over data
+    for(size_t i = 0; i < data.size(); ++i)
+    {
+        // iterate over every character in the string
+        for(const auto &e : data.at(i))
+        {   
+            if (!isVowel(e))
+            {
+                counter++;
+            }
+        }
+    }
+    
+    return counter; 
 }
+
 
 
 /// @brief Count the quantity of vowel characters in the data.
 /// @param data the vector containing all the strings of data
 /// @return the quantity of vowel characters in the data
-// TODO - countVowels
+/// C++11 "Legacy" pass by const reference
 int countVowels(const vector<string> &data)
 {
-    return 0;
+    int counter = 0;
+
+    // iterate over data
+    for(size_t i = 0; i < data.size(); ++i)
+    {
+        // iterate over every character in the string
+        for(const auto &e : data.at(i))
+        {   
+            if (isVowel(e))
+            {
+                counter++;
+            }
+        }
+    }
+    
+    return counter;   
 }
+
 
 
 
@@ -253,6 +298,36 @@ void printMenu()
     cout << "4. Count Non-Vowels" << endl;
     cout << "5. Count words that start with vowels" << endl;
     cout << "6. Exit" << endl << endl;
+}
+
+
+/// @brief read in all the words from the specified file
+/// @param data the gathered data containing all valid strings
+/// @return the quantity of words read (valid and invalid)
+int readData(vector<string> &data)
+{
+    int counter = 0;
+
+    string value;
+
+    while(cin >> value)
+    {        
+        counter++;
+
+        trimEnd(value);
+
+        if(validSize(value) && isLower(value) && !exists(data, value))
+        {
+            data.push_back(value);
+        }
+        else
+        {
+            cout << "Invalid Data: " << value << endl;
+            break;
+        }
+    }
+
+    return counter;
 }
 
 /// @brief Determines that a supplied string is a valid size
