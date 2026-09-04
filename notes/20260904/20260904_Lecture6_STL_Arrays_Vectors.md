@@ -124,6 +124,9 @@ After executing the loop that modifies our vector, the scores vector now contain
 ### Index-Based Iteration 
 Use when you need the index number or do not want to iterate over every item.
 
+####What is `size_t`
+You might notice we are using `size_t` instead of a standard `int` for our loop counter `i`. In C++, `size_t` is a special positive-only (unsigned) integer type specifically designed to represent sizes and counts. Because a vector cannot logically have a negative size, `scores.size()` returns a `size_t`. Using it as our loop counter ensures our data types match and prevents the compiler from issuing warnings.
+
 In this example we ouput multiple lines, and on each line is the student number (index within the vector) and the student's score.
 ```cpp
 vector<int> scores = {90, 85, 100};
@@ -175,7 +178,11 @@ cout << grid.at(1).at(2) << "\n";
 <br>
 
 ## 6. C++ Legacy Vector Print - Pass by Const Reference
-In legacy C++, the common idiom was to define parameters as pass by constant reference. This methodology allows the memory address of the container to be passed instead of creating an entire duplicate of the container when passing the container by value. We provide this const reference (`const &`) example as a reference to common code you will encounter because C++ was first released in 1985.
+In legacy C++, the standard practice is to to define parameters as pass by constant reference (`const &`). We provide this example as a reference to common code you will encounter in older codebases and examples. 
+
+Think of `const &` like giving a function a "read-only window" to look at your original vector:
+*   The **reference (`&`)** creates the window so the function does not have to waste time and memory photocopying the entire vector (which is what happens if you pass the container by value). 
+*   The **constant (`const`)** acts as the glass pane, guaranteeing that the function can look at the data but cannot reach in and change it.
 
 ```cpp
 #include <iostream>
@@ -245,7 +252,7 @@ int main()
     printElements(values);
     printElements(vals);
     printElements(arr);
-    
+
     return 0;
 }
 ```
