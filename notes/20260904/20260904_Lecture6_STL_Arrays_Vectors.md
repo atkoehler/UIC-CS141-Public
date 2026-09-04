@@ -1,6 +1,6 @@
 # C++ STL Arrays & Vectors
 
-## Topics for Today
+## Topics Covered
  1. Arrays & Vectors in C++ vs Other Languages
  2. Sampling of Vector Member Function Comparisons
  3. One Dimensional
