@@ -124,7 +124,7 @@ After executing the loop that modifies our vector, the scores vector now contain
 ### Index-Based Iteration 
 Use when you need the index number or do not want to iterate over every item.
 
-####What is `size_t`
+#### What is `size_t`
 You might notice we are using `size_t` instead of a standard `int` for our loop counter `i`. In C++, `size_t` is a special positive-only (unsigned) integer type specifically designed to represent sizes and counts. Because a vector cannot logically have a negative size, `scores.size()` returns a `size_t`. Using it as our loop counter ensures our data types match and prevents the compiler from issuing warnings.
 
 In this example we ouput multiple lines, and on each line is the student number (index within the vector) and the student's score.
@@ -177,7 +177,7 @@ cout << grid.at(1).at(2) << "\n";
 <br>
 <br>
 
-## 6. C++ Legacy Vector Print - Pass by Const Reference
+## 6. Legacy C++ Vector Print - Pass by Const Reference
 In legacy C++, the standard practice is to to define parameters as pass by constant reference (`const &`). We provide this example as a reference to common code you will encounter in older codebases and examples. 
 
 Think of `const &` like giving a function a "read-only window" to look at your original vector:
