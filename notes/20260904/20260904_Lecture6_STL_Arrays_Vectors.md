@@ -153,7 +153,7 @@ After executing the loop that modifies our vector, the scores vector now contain
 ## 5. Two Dimensions and Beyond
 A vector of vectors is similar to a list of lists in Python. We can create a multi dimensional vector and then access using multiple chained `.at()` function calls.
 
-In the following example we declare and initialize a multidimensional vector. The external vector's element data type is `vector<int>` so every element is its own vector. The internal vectors have elements that are integers. Based on our initialization, we will have 3 rows and 3 columns in a two-dimensional layout.
+In the following example we declare and initialize a multidimensional vector. The external vector's element data type is `vector<int>` so every element is its own vector. The internal vectors have elements that are integers. Based on our initialization, we will have 4 rows and 3 columns in a two-dimensional layout.
 
 ```cpp
 vector<vector<int>> grid = 
@@ -185,7 +185,7 @@ using namespace std;
 
 void printVector(const vector<int> &vals)
 {
-    for (int num : view)
+    for (int num : vals)
     {
         cout << num << " ";
     }
@@ -198,7 +198,7 @@ int main()
     
     printVector(values);
 
-    return 0
+    return 0;
 }
 ```
 
@@ -245,7 +245,8 @@ int main()
     printElements(values);
     printElements(vals);
     printElements(arr);
-    return 0
+    
+    return 0;
 }
 ```
 
