@@ -10,23 +10,43 @@
 
 using namespace std;
 
+/// @brief Example class implementation based on volunteered properties
+///        and actions from the Die class design activity.
 class Die
 {
+    // Three potential access modifiers: private, public, and protected.
+    // Classess are private by default, so if nothing is specifed then
+    // all declarations (data members and functions) will be private.
+    // This makes the initial private modifier often seen before data members
+    // a repeat as the access is already private. However, stating it provides
+    // increased human readability of our code.
+
+    // private indicates that only functions inside the Die class can 
+    // directly access (acquire or set) the functions or data members
     private:
         string color;
         int sides;
         int value;
 
+    // public indicates that all internal and external user can access these
+    // items through the dot operator (e.g. x.roll())
+    //
+    // Most often these are functions that interact with the private data 
+    // members in addition to function that perform some action related to 
+    // the object's design and purpose.
     public:
         int roll();
         int getValue();
 
+    // We can switch back to a prior modifier by simply stating it again.
+    // If there are actions/functions that should only be used internally
+    // within the class, such as helper functions, then they should 
+    // exist within a private section.
     private:
         void setValue(int);
 };
 
 void Option1Examples();
-void Option2Examples();
 
 int main(int argc, char *argv[])
 {
@@ -37,9 +57,6 @@ int main(int argc, char *argv[])
         {
         case 1:
             Option1Examples();
-            break;
-        case 2:
-            Option2Examples();
             break;
 
         default:
@@ -60,11 +77,9 @@ void Option1Examples()
     // Without anything specified the default constructor will be used.
     Die sixSidedDie;
 
+    // This code is commented out because we have not implemented the
+    // function, and therefore the code will not compile with just 
+    // the declaration.
     // Calling a member function on our Die instance
     // sixSidedDie.roll();
-}
-
-void Option2Examples()
-{
-
 }
