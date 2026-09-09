@@ -55,12 +55,12 @@ int main(int argc, char *argv[])
     {
         switch (atoi(argv[1]))
         {
-        case 1:
-            Option1Examples();
-            break;
+            case 1:
+                Option1Examples();
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
     else
