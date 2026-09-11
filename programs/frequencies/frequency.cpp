@@ -6,36 +6,28 @@
 
 
 // Libraries to accomplish various tasks
-#include <iostream> // Input-Output Streams
-#include <string>   // For the C++ string datatype
-#include <vector>   // For using vector containers for many counters
-
+#include <iostream> 
+#include <string>   
+#include <vector>   
 #include <fstream>
 
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////
 //
-// Complete of a Frequency Counter with file input.
+// Complete Frequency Counter Implementation
 //
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////
 
 using namespace std;
 
 
 // Prototypes for all local functions
 // Implemented in order listed here below main()
-// 8/31 Activity Area 1 Options
 bool isVowel(char);
-
-// 8/31 Activity Area 2 Options
 bool isLower(const string &);
 void trimEnd(string &);
-
-// 9/4 Activity Options
 bool exists(const vector<string> &, const string &);
 int countNonVowels(const vector<string> &);
 int countVowels(const vector<string> &);
-
-// Additional Function Prototypes (Pre-Coded)
 int countVowelStarters(const vector<string> &);
 void printMenu();
 int readData(vector<string> &, const string &filename);
@@ -47,17 +39,12 @@ bool validSize(const string &);
 /// @param argv the array containing c-strings of command line args
 int main(int argc, char *argv[])
 {    
-    // When testing we can hardcode values into our valid data vector
-    // so that we can test our functions with specific data.
-    // vector<string> data = {"my", "name", "bob", "and"};
-
     // When not testing we want to start with an empty data container.
     vector<string> data;
 
     int option = -1, reads = -1;
     const int DONE = 6;
 
-    
     // Storage for the filename that will be read in
     string file;
 
