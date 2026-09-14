@@ -31,7 +31,22 @@ class Die
 
         // Accessors / Getters
         // Die property / data member value acquisition
+        
+        // Poor Choice - makes a copy
+        // string getColor() const;
+        
+        // Better Choice - constant reference
+        // Restricts to view only access.
+        // const string& getColor() const;
+
+        // Best Choice - modern C++ (C++17 and on)
+        // Return a viewer using string_view which creates a viewer for a 
+        // string object. string_view is an alias to basic_string_view
+        // that can be used with strings, whereas basic_string_view can
+        // be used with many different types of character sequences.
         string_view getColor() const;
+
+
         int getSides() const;
         int getValue() const;
 
