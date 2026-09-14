@@ -31,23 +31,23 @@ class Die
 
         // Accessors / Getters
         // Die property / data member value acquisition
-        int getValue() const;
-        int getSides() const;
         string_view getColor() const;
+        int getSides() const;
+        int getValue() const;
 
         // Die Interactions
         int roll();
 
     private:
+        // Private seed functions for the random number generator
+        void seedRNG();
+        void seedRNG(int);
+
         // Mutators / Setters
         // Die property / data member value modification
         void setValue(int);
         void setSides(int);
         void setColor(string);
-
-        // Private seed functions for the random number generator
-        void seedRNG();
-        void seedRNG(int);
 };
 
 
@@ -62,7 +62,8 @@ class Die
 //
 //////////////////////////////////////////////////////////////////////
 
-Die::Die() {
+Die::Die() 
+{
     seedRNG();
     setSides(6);
     setColor("White");
@@ -80,46 +81,12 @@ Die::Die() {
 //
 //////////////////////////////////////////////////////////////////////
 
-/// @brief Roll the die. Sets value to a random number bewteen 1 and 
-///         the number of sides of the die.
-/// @return The new value of the die set by using the random number generator.
-int Die::roll() 
+/// @brief Acquire the value of the private data member color that is the
+///        color of the die represented as a string.
+/// @return a read-only viewer of the color property of the die
+string_view Die::getColor() const 
 {
-    value = dist(rng);  
-    return value;
-    
-    // Old C-style randomness would use rand() and mod (%). 
-    // value = rand() % 6 + 1;
-    // value = rand() % sides + 1;
-    //
-    // However, this methodology should not be used in C++ anymore and we also 
-    // avoid using mod because the range of numbers we mod by is not always a 
-    // number that divides the max value produced by the random number 
-    // generator evenly.
-    //
-    // For example if rand() produces 12 as its max value, then 
-    // mod by 5 (x % 5) would produce the following bucket mappings:
-    // result <--> x values
-    // ======      ========
-    //   0    <--> 0, 5, 10
-    //   1    <--> 1, 6, 11
-    //   2    <--> 2, 7, 12
-    //   3    <--> 3, 8
-    //   4    <--> 4, 9
-    //
-    // This creates an uneven spread across the potential random numbers,
-    // which is not what the user would expect. This means it is more likely 
-    // to get a 0, 1, or 2 in this scenario than a 3 or 4.
-    //
-}
-
-
-/// @brief Acquire the value of the private data member value that represents
-///        the face of the die that is upwards and its current value.
-/// @return the current value of the die
-int Die::getValue() const 
-{
-    return value;
+    return color;
 }
 
 
@@ -132,15 +99,24 @@ int Die::getSides() const
     return sides;
 }
 
-/// @brief Acquire the value of the private data member color that is the
-///        color of the die represented as a string.
-/// @return a read-only viewer of the color property of the die
-string_view Die::getColor() const 
+
+/// @brief Acquire the value of the private data member value that represents
+///        the face of the die that is upwards and its current value.
+/// @return the current value of the die
+int Die::getValue() const 
 {
-    return color;
+    return value;
 }
 
 
+/// @brief Roll the die. Sets value to a random number bewteen 1 and 
+///         the number of sides of the die.
+/// @return The new value of the die set by using the random number generator.
+int Die::roll() 
+{
+    value = dist(rng);  
+    return value;
+}
 
 
 
@@ -228,12 +204,12 @@ void Die::setValue(int v)
 void Option1Examples()
 {
     // Instantiating a object from our user created Die class
-    Die sixSidedDie;
+    Die singleDie;
 
     // Calling a member function on our Die instance
     for (int i = 0; i < 10; ++i)
     {
-        cout << "Rolled a " << sixSidedDie.roll() << endl;
+        cout << "Rolled a " << singleDie.roll() << endl;
     }
 }
 
