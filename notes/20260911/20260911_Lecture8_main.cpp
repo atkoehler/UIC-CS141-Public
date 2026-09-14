@@ -8,23 +8,46 @@
 #include <iostream> // Input-Output Streams
 #include <string>   // For the C++ string datatype
 
+#include <random>
+
 using namespace std;
 
 /// @brief Example class implementation based on volunteered properties
 ///        and actions from the Die class design activity.
 class Die
 {
+    // items in the private area are only accessible within the class
+    // and not by objects that are created by users of the class.
     private:
         string color;
         int sides;
         int value;
 
+        // Modern C++ Pseudo-Random Number Generator
+        mt19937 rng;
+        uniform_int_distribution<int> dist;
+
+    // items in the public area can be accessed via the dot operator
     public:
         int roll();
-        int getValue();
+
+        // We utilize const here to prevent changes to our internal 
+        // member variables as these are simple accessors and should not
+        // be modifying the values of the object's members.
+        int getValue() const;
+        int getSides() const;
+        string getColor() const;
 
     private:
         void setValue(int);
+        void setSides(int);
+
+        // We pass the string by value so we can use move() (std::move())
+        // and its semantics to transfer ownership of the string's underlying 
+        // memory directly to our class' member variable.
+        void setColor(string);
+        
+        void seedRNG();
 };
 
 void Option1Examples()
