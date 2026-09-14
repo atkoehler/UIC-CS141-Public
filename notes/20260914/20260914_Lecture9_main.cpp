@@ -26,10 +26,8 @@ class Die
         uniform_int_distribution<int> dist;
 
     public:
-        // Constructors
+        // Constructors - Creation & Instantiation of an Object
         Die();
-        Die(int v, string c);
-        Die(int v, int s, string c);
 
         // Accessors / Getters
         // Die property / data member value acquisition
@@ -39,14 +37,10 @@ class Die
 
         // Die Interactions
         int roll();
-        bool operator==(const Die& rhs) const;
-
-        // Prevention of Specific Creation Actions
-        Die(const Die&) = delete;
-        Die& operator=(const Die&) = delete;
 
     private:
         // Mutators / Setters
+        // Die property / data member value modification
         void setValue(int);
         void setSides(int);
         void setColor(string);
@@ -73,20 +67,6 @@ Die::Die() {
     setSides(6);
     setColor("White");
     roll(); // Initialize with a valid starting value
-}
-
-Die::Die(int s, string c) {
-    seedRNG();
-    setSides(s);
-    setColor(std::move(c));
-    roll(); 
-}
-
-Die::Die(int s, int seed, string c) {
-    seedRNG(seed);
-    setSides(s);
-    setColor(std::move(c));
-    roll(); 
 }
 
 
@@ -127,31 +107,37 @@ int Die::roll()
     //   3    <--> 3, 8
     //   4    <--> 4, 9
     //
-    // This creates an uneven spread across the potential random numbers.
-    // Which is not what the user would expect, as it is more likely to 
-    // get a 0, 1, or 2 in this scenario than a 3 or 4.
+    // This creates an uneven spread across the potential random numbers,
+    // which is not what the user would expect. This means it is more likely 
+    // to get a 0, 1, or 2 in this scenario than a 3 or 4.
     //
 }
 
 
+/// @brief Acquire the value of the private data member value that represents
+///        the face of the die that is upwards and its current value.
+/// @return the current value of the die
 int Die::getValue() const 
 {
     return value;
 }
 
+
+/// @brief Acquire the value of the private data member sides that represents
+///        the number of sides that this die has. The number of sides is also
+///        the maximum value this die can roll/generate.
+/// @return the number of sides this die has
 int Die::getSides() const 
 {
     return sides;
 }
 
+/// @brief Acquire the value of the private data member color that is the
+///        color of the die represented as a string.
+/// @return a read-only viewer of the color property of the die
 string_view Die::getColor() const 
 {
     return color;
-}
-
-bool Die::operator==(const Die& rhs) const 
-{
-    return value == rhs.value;
 }
 
 
@@ -166,41 +152,6 @@ bool Die::operator==(const Die& rhs) const
 //  dot operator to users.
 //
 ////////////////////////////////////////////////////////////////////////////
-
-/// @brief Set the private class data member color. Utilizes the move()
-///         semantics established in C++11 to transfer the underlying
-///         aspects of the string without a character by character copy.
-/// @param c the string to update the internal color value to
-void Die::setColor(string c) 
-{
-    color = std::move(c);
-}
-
-
-/// @brief Set the private class data member value
-/// @param v the integer to update the value of value to
-void Die::setValue(int v) 
-{
-    value = v;
-}
-
-/// @brief Set the private class data member sides
-/// @param s the integer to update the value of sides to
-void Die::setSides(int s) 
-{
-    // Basic validation to prevent invalid side counts
-    if (sides >= 1)
-    {
-        sides = s;
-    }
-    else
-    {
-        sides = 6;
-    }
-    
-    // Update the distribution boundaries to match the side count
-    dist = uniform_int_distribution<int>(1, sides);
-}
 
 /// @brief a simple no argument seeding function that causes true randomness
 ///         to be utilized to create the seed value sequence
@@ -233,13 +184,46 @@ void Die::seedRNG(int seedValue)
 }
 
 
+/// @brief Set the private class data member color. Utilizes the move()
+///         semantics established in C++11 to transfer the underlying
+///         aspects of the string without a character by character copy.
+/// @param c the string to update the internal color value to
+void Die::setColor(string c) 
+{
+    color = std::move(c);
+}
+
+
+/// @brief Set the private class data member sides
+/// @param s the integer to update the value of sides to
+void Die::setSides(int s) 
+{
+    // Basic validation to prevent invalid side counts
+    if (sides >= 1)
+    {
+        sides = s;
+    }
+    else
+    {
+        sides = 6;
+    }
+    
+    // Update the distribution boundaries to match the side count
+    dist = uniform_int_distribution<int>(1, sides);
+}
+
+
+/// @brief Set the private class data member value
+/// @param v the integer to update the value of value to
+void Die::setValue(int v) 
+{
+    value = v;
+}
 
 
 
 
-
-
-
+// Main program with simple example using a die and rolling it
 
 void Option1Examples()
 {
@@ -252,7 +236,6 @@ void Option1Examples()
         cout << "Rolled a " << sixSidedDie.roll() << endl;
     }
 }
-
 
 int main(int argc, char *argv[])
 {
