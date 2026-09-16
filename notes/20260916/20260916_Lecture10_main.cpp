@@ -27,11 +27,6 @@ class Die
         uniform_int_distribution<int> dist;
 
     public:
-        // Constructors - Creation & Instantiation of an Object
-        Die();
-        Die(int v, string c);
-        Die(int v, int s, string c);
-
         // Accessors / Getters
         // Die property / data member value acquisition
         string_view getColor() const;
@@ -41,11 +36,6 @@ class Die
 
         // Die Interactions
         int roll();
-        bool operator==(const Die& rhs) const;
-
-        // Prevention of Specific Creation Actions
-        Die(const Die&) = delete;
-        Die& operator=(const Die&) = delete;
 
     private:
         // Mutators / Setters
@@ -60,50 +50,71 @@ class Die
 };
 
 
+// Activity - Compare Two Dice
+// Pass by Value - Should not do this, creates a copy of the dice.
+// bool compare(Die a, Die b)
+// {
+//     return a.getValue() == b.getValue();
+// }
 
-
-
-
-//////////////////////////////////////////////////////////////////////
-//
-//  Die Class Implementations
-//  Constructors - Used to create and instantiate a Die object.
-//
-//////////////////////////////////////////////////////////////////////
-
-// Initialization lists can be used to set class member variables by
-// specifying the variable name and then in parentheses the value to set.
-
-/// @brief Create a die from a constructor that specifies 0 values.
-Die::Die() : color("white")
+/// @brief A comparison function that determines if two dice are equivalent.
+///        Design Choice: What determines equivalence?
+/// @param a the first die to compare
+/// @param b the second die to compare
+/// @return true when the values of the dice are the same
+bool compare(const Die &a, const Die &b)
 {
-    setSides(6);
-    seedRNG();
-    roll(); // Initialize with a valid starting value
+    return a.getValue() == b.getValue();
 }
 
-/// @brief Create a die with specific member values - partially parametized
-/// @param s the number of sides on the die
-/// @param c the color of the die
-Die::Die(int s, string c) 
+
+// Main program with simple example using a collection of dice and rolling them
+void Option1Examples()
 {
-    setSides(s);
-    setColor(std::move(c));
-    seedRNG();
-    roll(); 
+    Die a;
+    Die b;
+
+    a.roll();
+    b.roll();
+
+    cout << "a value: " << a.getValue() << '\t' 
+        << "b value: " << b.getValue() << endl;
+
+    if (a.getValue() == b.getValue())
+    {
+        cout << "A matching value!" << endl;
+    }
+
+    if (compare(a, b))
+    {
+        cout << "A matching value!" << endl;    
+    }
 }
 
-/// @brief Create a die with specific member values - fully parametized
-/// @param s the number of sides on the die
-/// @param seed seed value to use with the pseduorandom number generator
-/// @param c the color of the die
-Die::Die(int s, int seed, string c) 
+
+int main(int argc, char *argv[])
 {
-    setSides(s);
-    setColor(std::move(c));
-    seedRNG(seed);
-    roll(); 
+    // no second command line argument, run all examples
+    if (argc > 1 && isdigit(argv[1][0]))
+    {
+        switch (atoi(argv[1]))
+        {
+            case 1:
+                Option1Examples();
+                break;
+
+            default:
+                break;
+        }
+    }
+    else
+    {
+        cout << "Specify a case to execute, e.g. ./exeName 1" << endl;
+        cout << "If a.out is the executable we would use: ./a.out 1" << endl;
+    }
+    return 0;
 }
+
 
 
 
@@ -176,16 +187,6 @@ int Die::roll()
 }
 
 
-/// @brief Compare whether two dice are equivalent
-/// @param rhs The Die on the right hand side of the equivalence check
-/// @return true when the one die completely matches the other 
-///         Die, otherwise false.
-bool Die::operator==(const Die& rhs) const 
-{
-    return value == rhs.value;
-}
-
-
 
 
 
@@ -243,7 +244,7 @@ void Die::seedRNG()
 
 /// @brief Seed the pseduorandom number generator associated
 ///         with this object's instantiation.
-/// @param seedValue Integer value to use as a seed or 0 for true randomness
+/// @param seedValue Integer value to use as a seed or -1 for true randomness
 void Die::seedRNG(int seedValue) 
 {
     if (seedValue == -1) 
@@ -261,58 +262,4 @@ void Die::seedRNG(int seedValue)
         // Use the provided integer for a predictable, deterministic sequence
         rng.seed(seedValue);
     }
-}
-
-
-
-
-// Main program with simple example using a collection of dice and rolling them
-void Option1Examples()
-{
-    // A container full objects that are from our user created Die Class
-    array<Die, 5> cup;
-    
-    for (int i = 1; i <= 3; i++)
-    {
-        // Roll the cup of dice
-        for (Die &d : cup)
-        {
-            d.roll();
-        }
-
-        // Display the cup contents
-        string output = "[";
-        for (const Die &d : cup)
-        {
-            output += to_string(d.getValue()) + ',';
-        }
-        output.pop_back();
-        output += "]";
-
-        cout << "Shake " << i << ": " << output << endl;
-    }
-}
-
-
-int main(int argc, char *argv[])
-{
-    // no second command line argument, run all examples
-    if (argc > 1 && isdigit(argv[1][0]))
-    {
-        switch (atoi(argv[1]))
-        {
-            case 1:
-                Option1Examples();
-                break;
-
-            default:
-                break;
-        }
-    }
-    else
-    {
-        cout << "Specify a case to execute, e.g. ./exeName 1" << endl;
-        cout << "If a.out is the executable we would use: ./a.out 1" << endl;
-    }
-    return 0;
 }
