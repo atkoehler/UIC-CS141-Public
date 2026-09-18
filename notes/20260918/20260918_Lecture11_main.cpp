@@ -149,30 +149,6 @@ int Die::roll()
 {
     value = dist(rng);  
     return value;
-    
-    // Old C-style randomness would use rand() and mod (%). 
-    // value = rand() % 6 + 1;
-    // value = rand() % sides + 1;
-    //
-    // However, this methodology should not be used in C++ anymore and we also 
-    // avoid using mod because the range of numbers we mod by is not always a 
-    // number that divides the max value produced by the random number 
-    // generator evenly.
-    //
-    // For example if rand() produces 12 as its max value, then 
-    // mod by 5 (x % 5) would produce the following bucket mappings:
-    // result <--> x values
-    // ======      ========
-    //   0    <--> 0, 5, 10
-    //   1    <--> 1, 6, 11
-    //   2    <--> 2, 7, 12
-    //   3    <--> 3, 8
-    //   4    <--> 4, 9
-    //
-    // This creates an uneven spread across the potential random numbers,
-    // which is not what the user would expect. This means it is more likely 
-    // to get a 0, 1, or 2 in this scenario than a 3 or 4.
-    //
 }
 
 
