@@ -5,33 +5,12 @@
 /// @brief Code and lecture notes from the live lecture.
 ///     Some code may require -std=c++23
 
-// Methodologies to prevent a header file from being included multiple times, 
-// avoiding redefinition errors, but they differ in implementation and history.
-
-// Class C and Legacy C++
-/// (#ifndef ... #define ... #endif)
-// The traditional include guard. It is the only officially standard-compliant 
-// method and is 100% portable across every obscure or legacy compiler. 
-// However, it requires three lines of boilerplate and relies on unique macro 
-// names, making it vulnerable to copy-paste naming collisions. To avoid these 
-// collisions some companies require the PATH or FOLDER and the NAME.
-// Example:
-// #ifndef
-// #define PATH_DIE_H
-// ... file contents
-// #endif
-
-// Modern C++
-// Technically not in the official C++ specification. 
-// Almost universally supported by all major compilers (GCC, Clang, MSVC). 
-// It requires only one line at the top of the file, completely eliminates  
-// macro naming bugs, and often speeds up compilation because the compiler 
-// knows to skip opening the file a second time.
 #pragma once
 
 #include <compare>
 #include <random>
 #include <string>
+#include <string_view>
 
 using std::string;
 using std::string_view;

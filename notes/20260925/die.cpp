@@ -9,6 +9,7 @@
 #include <compare>
 #include <random>
 #include <string>
+#include <string_view>
 
 #include "die.h"
 
