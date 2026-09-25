@@ -1,9 +1,10 @@
 /// @file die.cpp
 /// @brief Implementation of the various Die class functions.
 /// @author Adam T Koehler, PhD
-/// @date September 21, 2026
+/// @date September 23, 2026
 /// @brief Code and lecture notes from the live lecture.
 ///     Requires C++20 and some code my require C++23, use -std=c++23
+///     Compile everything with g++ -std=23 die.cpp XXX_main.cpp
 
 #include <compare>
 #include <random>
@@ -131,33 +132,6 @@ bool Die::operator==(const Die& rhs) const
 //            (self.sides == rhs.sides) &&
 //            (self.color == rhs.color);
 // }
-
-
-// Legacy C++ Operator Overload of Equality Comparison 
-// As of C++20 the compiler automatically will handle the comparison 
-// conversion from != to ==.
-
-/// @brief Compare whether two dice are not equivalent
-/// @param rhs The Die on the Right Hand Side of the operator
-/// @return true when the one die does not completely matches the other 
-///         Die, otherwise false.
-// bool Die::operator!=(const Die& rhs) const 
-// {
-//     return !(*this == rhs);
-// }
-
-
-
-// The Spaceship Operator - C++20
-// Relational Comparisons - Handles  <, >, <=, >=
-// We define how dice "rank" against each other. For simplcity, and for many
-// games, the magnitude of the die value is often the comparison.
-auto Die::operator<=>(const Die& other) const 
-{
-    return value <=> other.value;
-}
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////

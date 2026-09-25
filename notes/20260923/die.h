@@ -1,7 +1,7 @@
 /// @file die.h
 /// @brief Die class declaration the creates an N-sided colored die.
 /// @author Adam T Koehler, PhD
-/// @date September 21, 2026
+/// @date September 23, 2026
 /// @brief Code and lecture notes from the live lecture.
 ///     Some code may require -std=c++23
 
@@ -72,15 +72,11 @@ class Die
 
         // Exact Equality - As of C++20, this handles == and !=
         bool operator==(const Die& rhs) const;
+
         
         // Modern C++23 Methodology
         // Requires c++23 and gcc-14.1+
         // bool operator==(this const Die& self, const Die& rhs);
-
-
-        // The Spaceship Operator - C++20
-        // Relational Comparisons - Handles <, >, <=, >=
-        auto operator<=>(const Die &other) const;
 
         // Prevention of Specific Creation Actions
         Die(const Die&) = delete;
