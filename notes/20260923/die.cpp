@@ -48,8 +48,9 @@ Die::Die(int s, string c) : Die(s, -1, c)
 /// @param s the number of sides on the die
 /// @param seed seed value to use with the pseduorandom number generator
 /// @param c the color of the die
-Die::Die(int s, int seed, string c) : sides(s)
+Die::Die(int s, int seed, string c)
 {
+    setSides(s);
     setColor(std::move(c));
     seedRNG(seed);
     roll(); 
