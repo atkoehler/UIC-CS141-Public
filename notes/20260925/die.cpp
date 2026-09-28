@@ -200,7 +200,7 @@ void Die::setValue(int value)
 void Die::setSides(int s) 
 {
     // Basic validation to prevent invalid side counts
-    if (sides >= 1)
+    if (s >= 1)
     {
         sides = s;
     }
