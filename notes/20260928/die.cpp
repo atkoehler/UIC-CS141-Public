@@ -179,7 +179,6 @@ std::strong_ordering Die::operator<=>(const Die& other) const
 ///         members of the two operands.
 Die Die::operator+(const Die& rhs) const 
 {
-    int combinedValue = this->value + rhs.value;
     int combinedSides = this->sides + rhs.sides;
     string combinedColor = this->color + "+" + rhs.color; 
 
