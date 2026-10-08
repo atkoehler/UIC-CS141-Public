@@ -206,6 +206,10 @@ Die Die::operator-(const Die& rhs) const
     return Die(newSides, newColor);
 }
 
+
+/// @brief Convert the object and its private data member values
+///        to a human-readable string.
+/// @return the string representation of the Die object
 string Die::to_string() const
 {
     string s;

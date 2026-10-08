@@ -14,6 +14,8 @@
 
 using namespace std;
 
+// Using the to_string function from 10-05 activities
+// That we implemented in codebase for 10-07
 void Example1()
 {
     Die a;
