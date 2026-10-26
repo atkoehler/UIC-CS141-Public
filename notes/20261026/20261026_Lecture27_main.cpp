@@ -1,6 +1,6 @@
 /// @file 20261026_Lecture27_main.cpp
 /// @author Adam T Koehler, PhD
-/// @date October 16, 2026
+/// @date October 26, 2026
 /// @brief Code and lecture notes from the live lecture.
 ///     Some items require C++20, compile with g++ -std=c++23 XXX_main.cpp
 
