@@ -12,8 +12,44 @@
 using namespace std;
 
 
-// TODO: Convert binary search to a recursive implementation
+/// @brief Utilize recursive binary search to look for a provided value 
+///     and provide its index back through reference parameter.
+/// @param v the directly accessible (at(i)) container, often a vector
+/// @param value the value to look for within the container
+/// @param loc the variable to update to the discovery location when found
+/// @param low the lowest index in the range to search
+/// @param high the highest index in the range to search
+/// @return true when the value is found, otherwise false
+/// @pre The container v is sorted in ascending order.
+bool binarySearchRecursive(const auto &v, const Card &value, 
+        int &loc, int low, int high)
+{
+    // Is our search space exhausted such that there are no more items in it?
+    // Could be written as high-low < 0
+    if (low > high)
+    {
+        return false;
+    }
 
+    int mid = (high + low) / 2;
+
+    // Did we discover the thing we are looking for?
+    if (v.at(mid) == value)
+    {
+        loc = mid;
+        return true;
+    }
+
+    // Determine which half of the container to search
+    if (v.at(mid) < value)
+    {
+        return binarySearchRecursive(v, value, loc, mid+1, high);
+    }
+    else
+    {
+        return binarySearchRecursive(v, value, loc, low, mid-1);
+    }   
+}
 
 /// @brief Utilize binary search to determine the location of a value 
 ///         within a container.
@@ -104,8 +140,14 @@ bool search(const auto &v, const Card &value, int &loc)
 {
     if (isSorted(v))
     {
-        cout << "Executing binary search." << endl;
-        return binarySearch(v, value, loc);
+        if(v.size() % 2 == 0)
+        {
+            cout << "Executing binary search." << endl;
+            return binarySearch(v, value, loc);
+        }
+
+        cout << "Executing binary search recursively." << endl;
+        return binarySearchRecursive(v, value, loc, 0, v.size()-1);
     }
 
     cout << "Executing linear search." << endl;
@@ -133,6 +175,8 @@ void Example1()
     }
     cout << endl << endl;
 
+
+    // Search Attempt #1
     searchFor = Card("King", "Clubs", false);  
     cout << "Attempting to find: " << endl << searchFor.to_string() << endl;
     discovered = search(pile, searchFor, location);    
@@ -147,7 +191,9 @@ void Example1()
     cout << endl << endl;
 
 
-    searchFor = Card("Queen", "Hearts", true);  
+    // Search Attempt #2
+    pile.push_back(Card("Ace", "Spades", false));
+    searchFor = Card("King", "Clubs", false);  
     cout << "Attempting to find: " << endl << searchFor.to_string() << endl;
     discovered = search(pile, searchFor, location);    
     if(discovered)
@@ -161,6 +207,7 @@ void Example1()
     cout << endl << endl;
 
 
+    // Search Attempt #3
     pile.push_back(Card("One", "Clubs", false));
     searchFor = Card("Queen", "Hearts", true);  
     cout << "Attempting to find: " << endl << searchFor.to_string() << endl;
@@ -176,6 +223,31 @@ void Example1()
 }
 
 
+void Example2()
+{
+    string unsorted = "hello";
+    string sorted = "aim";
+
+    // Demonstrating the power of auto as a function parameter.
+    // We designed our function around vectors, but the member functions we 
+    // use and iteration strategies all exist in the string data type too!
+    
+    if (!isSorted(unsorted))
+    {
+        cout << "This string's characters are not in ascending order: "
+            << endl << unsorted << endl;
+    }
+
+    cout << endl << endl;
+
+    if (isSorted(sorted))
+    {
+        cout << "This string's characters are in ascending order: "
+            << endl << sorted << endl;
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     // no second command line argument, run all examples
@@ -185,6 +257,10 @@ int main(int argc, char *argv[])
         {
             case 1:
                 Example1();
+                break;
+
+            case 2:
+                Example2();
                 break;
 
             default:
