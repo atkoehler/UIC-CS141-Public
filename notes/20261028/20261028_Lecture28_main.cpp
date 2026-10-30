@@ -11,6 +11,13 @@
 
 using namespace std;
 
+// Activity Pairing - Solution code shown but not live coded.
+// binarySearchRecursive pairs with the code conversion activity of 
+// converting the iterative search to a recursive implementation.
+// 1) Identify the stopping points for the iterative algorithm and
+// convert them to base cases. 2) Identify when the iterative algorithm
+// continues and what the values for the next iteration get updated,
+// and convert to a recursive function call.
 
 /// @brief Utilize recursive binary search to look for a provided value 
 ///     and provide its index back through reference parameter.
@@ -96,64 +103,6 @@ bool binarySearch(const auto &v, const Card &value, int &loc)
     return false;
 }
 
-/// @brief Utilize linear search to look for the value in the container.
-/// @param v The container to search through.
-/// @param value The value to look for in the container.
-/// @param loc The variable to update to the index of the discovered value.
-/// @return true when the value is found, otherwise false
-bool linearSearch(const auto &v, const Card &value, int &loc)
-{
-    for(size_t index = 0; index < v.size(); ++index)
-    {
-        if (v.at(index) == value)
-        {
-            loc = index;
-            return true;
-        }
-    }
-    return false;
-}
-
-/// @brief Determine if the container is sorted in ascending order.
-/// @param container The container to check the sorted state of.
-/// @return true when the container is in ascending order, otherwise false
-bool isSorted(const auto &container)
-{
-    // Compare the current element to the previous one in the container
-    for (size_t i = 1; i < container.size(); ++i)
-    {
-        if (container.at(i - 1) > container.at(i))
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/// @brief Search the container for the specified value and update the variable loc.
-/// @param v The container to search.
-/// @param value The value to search for.
-/// @param loc The variable to update to the index of the discovered value.
-/// @return true when the value is found, otherwise false
-bool search(const auto &v, const Card &value, int &loc)
-{
-    if (isSorted(v))
-    {
-        if(v.size() % 2 == 0)
-        {
-            cout << "Executing binary search." << endl;
-            return binarySearch(v, value, loc);
-        }
-
-        cout << "Executing binary search recursively." << endl;
-        return binarySearchRecursive(v, value, loc, 0, v.size()-1);
-    }
-
-    cout << "Executing linear search." << endl;
-    return linearSearch(v, value, loc);
-}
-
 /// @brief Binary search examples using a vector of integers.
 void Example1()
 {
@@ -178,8 +127,9 @@ void Example1()
 
     // Search Attempt #1
     searchFor = Card("King", "Clubs", false);  
+    cout << "Search Attempt #1 - Iterative" << endl;
     cout << "Attempting to find: " << endl << searchFor.to_string() << endl;
-    discovered = search(pile, searchFor, location);    
+    discovered = binarySearch(pile, searchFor, location);    
     if(discovered)
     {
         cout << "  Found at index value " << location << endl;  
@@ -192,10 +142,25 @@ void Example1()
 
 
     // Search Attempt #2
-    pile.push_back(Card("Ace", "Spades", false));
+    searchFor = Card("Queen", "Hearts", true); 
+    cout << "Search Attempt #2 - Iterative" << endl; 
+    cout << "Attempting to find: " << endl << searchFor.to_string() << endl;
+    discovered = binarySearch(pile, searchFor, location);    
+    if(discovered)
+    {
+        cout << "  Found at index value " << location << endl;  
+    }
+    else
+    {
+        cout << "  Did not find " << searchFor.to_string() << endl;
+    }
+    cout << endl << endl;
+
+    // Search Attempt #3 - Same as #1 but recursive
     searchFor = Card("King", "Clubs", false);  
+    cout << "Search Attempt #3 - Recursive (same as #1)" << endl;
     cout << "Attempting to find: " << endl << searchFor.to_string() << endl;
-    discovered = search(pile, searchFor, location);    
+    discovered =  binarySearchRecursive(pile, searchFor, location, 0, pile.size()-1);
     if(discovered)
     {
         cout << "  Found at index value " << location << endl;  
@@ -207,11 +172,11 @@ void Example1()
     cout << endl << endl;
 
 
-    // Search Attempt #3
-    pile.push_back(Card("One", "Clubs", false));
+    // Search Attempt #4 - Same as #2 but recursive
     searchFor = Card("Queen", "Hearts", true);  
+    cout << "Search Attempt #4 - Recursive (same as #2)" << endl;
     cout << "Attempting to find: " << endl << searchFor.to_string() << endl;
-    discovered = search(pile, searchFor, location);    
+    discovered =  binarySearchRecursive(pile, searchFor, location, 0, pile.size()-1);
     if(discovered)
     {
         cout << "  Found at index value " << location << endl;  
@@ -221,32 +186,6 @@ void Example1()
         cout << "  Did not find " << searchFor.to_string() << endl;
     }
 }
-
-
-void Example2()
-{
-    string unsorted = "hello";
-    string sorted = "aim";
-
-    // Demonstrating the power of auto as a function parameter.
-    // We designed our function around vectors, but the member functions we 
-    // use and iteration strategies all exist in the string data type too!
-    
-    if (!isSorted(unsorted))
-    {
-        cout << "This string's characters are not in ascending order: "
-            << endl << unsorted << endl;
-    }
-
-    cout << endl << endl;
-
-    if (isSorted(sorted))
-    {
-        cout << "This string's characters are in ascending order: "
-            << endl << sorted << endl;
-    }
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -257,10 +196,6 @@ int main(int argc, char *argv[])
         {
             case 1:
                 Example1();
-                break;
-
-            case 2:
-                Example2();
                 break;
 
             default:
