@@ -151,6 +151,9 @@ void Example1()
 }
 
 
+// Activity Area Coded Solution
+// Pairs with lecture activity to implement the iterative version
+// and then using the iterative version implement a recursive version.
 
 /// @brief Recursive implementation to count the number of digits
 ///         in a provided integer value.
