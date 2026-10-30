@@ -151,7 +151,62 @@ void Example1()
 }
 
 
+
+/// @brief Recursive implementation to count the number of digits
+///         in a provided integer value.
+/// @param x The value to determine the quantity of digits for.
+/// @return The quantity of digits in the provided number.
+int countDigits(int x)
+{
+   // Base Case: Known answer - 1 digit
+   if (-10 < x && x < 10)
+   {
+       return 1;
+   }
+
+   // Recursive Case: 
+   // 1 for the current rightmost digit + 
+   // count the digits in the remaining portion of the number
+   return 1 + countDigits(x/10);
+}
+
+// /// @brief Iterative implementation of counting the digits
+// ///         in a provided non-negative number.
+// /// @param n the number to determine the quantity of digits for
+// /// @return the quantity of digits in the number
+// int countDigits(int n)
+// {
+//    int counter = 0;
+//    while(n > 0)
+//    {
+//       counter++;
+//       n /= 10;
+//    }
+//    return counter;
+// }   
+
 void Example2()
+{
+    // Example executions of countDigits function.
+    int val = 1234;
+    cout << "There are " << countDigits(val) << " digits in " << val << endl;
+    cout << endl;
+
+    val = 0;
+    cout << "There are " << countDigits(val) << " digits in " << val << endl;
+    cout << endl;
+
+    val = 389230;
+    cout << "There are " << countDigits(val) << " digits in " << val << endl;
+    cout << endl;
+
+    val = -1234;
+    cout << "There are " << countDigits(val) << " digits in " << val << endl;
+}
+
+
+
+void Example3()
 {
     string unsorted = "hello";
     string sorted = "aim";
@@ -188,6 +243,10 @@ int main(int argc, char *argv[])
 
             case 2:
                 Example2();
+                break;
+
+            case 3:
+                Example3();
                 break;
 
             default:
