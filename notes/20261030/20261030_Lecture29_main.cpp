@@ -63,7 +63,7 @@ bool search(const auto &v, const Card &value, int &loc)
         return linearSearch(v, value, loc);
     }
     cout << "Executing linear search recursively." << endl;
-    //return linearSearch(v, value, loc, 0);
+    return linearSearch(v, value, loc, 0);
 }
 
 /// @brief Binary search examples using a vector of integers.
@@ -325,4 +325,35 @@ bool linearSearch(const auto &v, const Card &value, int &loc)
         }
     }
     return false;
+}
+
+/// Pairs with code conversion activity:
+///     From iterative linear search to recursive.
+/// @brief Utilize a recursive linear search to look for the value 
+///         in the container. Compile-time polymorphism will choose which
+///         linear search function is invoked based on the parameters.
+/// @param v The container to search through.
+/// @param value The value to look for in the container.
+/// @param loc The variable to update to the index of the discovered value.
+/// @return true when the value is found, otherwise false
+bool linearSearch(const auto &v, const Card &value, int &loc, int index)
+{
+    // Base Case: Discovered the value at the current index
+    if (v.at(index) == value)
+    {
+        loc = index;
+        return true;
+    }
+
+    // Base Case: The search space has no more items because the current
+    //            index value is larger than the last index in the container.
+    if (index >= v.size())
+    {
+        return false;
+    }
+
+    // Recursive Case: We did not find the item and we are not out of things
+    //                 to search so lets decrease our search space by looking
+    //                 one spot further into the container.
+    return linearSearch(v, value, loc, index+1);
 }
