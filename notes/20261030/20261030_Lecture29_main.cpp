@@ -44,6 +44,8 @@ bool isSorted(const auto &container);
 /// @return true when the value is found, otherwise false
 bool search(const auto &v, const Card &value, int &loc)
 {
+    // Determine whether we can use binary search or not
+    // because binary search requires a sorted container.
     if (isSorted(v))
     {
         if(v.size() % 2 == 0)
