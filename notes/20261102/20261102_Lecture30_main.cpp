@@ -46,6 +46,7 @@ void Activity2()
     hand.push_back(new Card("Two", "Diamonds", true));
     hand.push_back(new Card("Three", "Spades", false));
     hand.push_back(new Card("Ace", "Clubs", false));
+    hand.push_back(new Card("King", "Clubs", false));
 
     // Print each card
     // Example 1: Index-Based For Loop
@@ -86,6 +87,8 @@ void Activity3()
     hand.push_back(new Card("Two", "Diamonds", true));
     hand.push_back(new Card("Three", "Spades", false));
     hand.push_back(new Card("Ace", "Clubs", false));
+    hand.push_back(new Card("King", "Clubs", false));
+
 
     cout << "Before Release: " << endl;
     for (const Card* c : hand)
@@ -98,6 +101,7 @@ void Activity3()
         cout << "   " << c->to_string() << endl;
     }
 
+    // This is the activity function being invoked.
     releaseAll(hand);
 
     cout << "After Release: " << endl;
@@ -149,9 +153,15 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-
+/// @brief Print the string in reverse character by character. 
+///     Implementation encapsulates whether we are doing an iterative or 
+///     recursive implementation as the user does not need to know that.
+/// @param s The string to print, passed as a lightweight string_view object.
 void printReverse(string_view s)
 {
+    // Depending on the size being odd or even, print recursively or 
+    // iteratively to demonstrate both working. You normally would not
+    // do this, but this helps show both working without code modification.
     if (s.size() % 2 == 0)
     {
         printInReverse(s, 0);
@@ -164,15 +174,11 @@ void printReverse(string_view s)
     }
 }
 
+/// @brief Iterative implementation of printing a string in reverse.
+/// @param s The string to print sent as a lightweight string_view object.
 void printInReverse(string_view s)
 {
-    if (s.empty())
-    {
-        return;
-    }
-
-    // Why can't we use size_t for this loop's 
-    // iteration variable type?
+    // Why can't we use size_t for this loop's iteration variable type?
     for(int i = s.size() - 1; i >= 0; --i)
     {
         cout << s.at(i) << ' ';
@@ -180,22 +186,35 @@ void printInReverse(string_view s)
     cout << endl;
 }
 
+/// @brief Activity: Implement a function that utilizes a 
+///         recursive algorithm to print a string in reverse
+///         character by character.
+/// @param s The string to printout.
+/// @param index The current characters index within the string.
 void printInReverse(string_view s, size_t index)
 {
+    // Base Case: There is nothing in the string to print.
     if (s.empty())
     {
         return;
     }
 
+    // Base Case: The index we want to print out is out of bounds/range.
     if (index >= s.size())
     {
         return;
     }
 
+    // Move towards the base case of the end of the string.
     printInReverse(s, index+1);
 
+    // Output the current index's element (character).
+    // The first time this executes will be after the base case returns.
+    // So index == size(), therefore returning to index-1 or the last element.
     cout << s.at(index) << ' ';
 
+    // We want an newline after the last character to be output.
+    // Since we are going in reverse the last character is at index 0.
     if (index == 0)
     {
         cout << endl;
