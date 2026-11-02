@@ -12,6 +12,7 @@
 
 using namespace std;
 
+void printForward(string_view s, size_t index=0);
 void printReverse(string_view);
 void printInReverse(string_view);
 void printInReverse(string_view, size_t);
@@ -28,6 +29,10 @@ void Activity1()
 
     for(const auto &w : words)
     {
+        cout << w << " forwards is:  " << endl;
+        printForward(w);
+        cout << endl;
+
         cout << w << " in reverse is: " << endl;
         printReverse(w);
         cout << endl;
@@ -152,6 +157,40 @@ int main(int argc, char *argv[])
     }
     return 0;
 }
+
+/// @brief Print the string character by character recursively.
+/// @param s The string to print, passed as a lightweight string_view object.
+/// @param index The current index to print out. Defaults to zero.
+void printForward(string_view s, size_t index)
+{
+    // Base Case: There is nothing in the string to print.
+    if (s.empty())
+    {
+        return;
+    }
+
+    // Base Case: The index we want to print out is out of bounds/range.
+    if (index >= s.size())
+    {
+        return;
+    }
+
+    // Output the current index's element (character).
+    // The first time this executes will be after the base case returns.
+    // So index == size(), therefore returning to index-1 or the last element.
+    cout << s.at(index) << ' ';
+
+    // We want an newline after the last character to be output.
+    // Since we are going forward the last character is at size() - 1.
+    if (index+1 == s.size())
+    {
+        cout << endl;
+    }
+
+    // Move towards the base case of the end of the string.
+    printForward(s, index+1);
+}
+
 
 /// @brief Print the string in reverse character by character. 
 ///     Implementation encapsulates whether we are doing an iterative or 
