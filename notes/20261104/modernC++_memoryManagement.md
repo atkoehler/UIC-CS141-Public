@@ -244,7 +244,7 @@ if (shared_ptr<Team> tempTeam = watchingTeam.lock()) {
 
 Before C++11, developers had to manually allocate memory using `new` and explicitly deallocate it using `delete`. For arrays, `new[]` and `delete[]` were required.
 
-This approach is highly discouraged today because any early `return`, exception, or simple oversight results in permanent memory leaks.
+This approach is highly discouraged today because any early return, exception, or simple oversight results in permanent memory leaks.
 
 ### Example: Direct `new`, `delete`, and `delete[]`
 
