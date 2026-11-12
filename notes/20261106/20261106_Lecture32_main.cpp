@@ -1,0 +1,258 @@
+/// @file 20261106_Lecture32_main.cpp
+/// @author Adam T Koehler, PhD
+/// @date November 6, 2026
+/// @brief Code and lecture notes from the live lecture.
+///     Some items require C++20, compile with g++ -std=c++23 XXX_main.cpp
+
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "card.h"
+
+using namespace std;
+
+void printForward(string_view s, size_t index=0);
+void printReverse(string_view);
+void printInReverse(string_view);
+void printInReverse(string_view, size_t);
+void releaseAll(vector<Card*> &);
+
+
+/// @brief Executing activity area 1 which was a function to print provided 
+///         strings in reverse from last character to first character.
+///        We are using encapsulation to hide whether the printing process is 
+///         using a recursive or iterative algorithm for printing.
+void Activity1()
+{
+    vector<string> words = {"help", "me", "sample", "racecar", "howdy"};
+
+    for(const auto &w : words)
+    {
+        cout << w << " forwards is:  " << endl;
+        printForward(w);
+        cout << endl;
+
+        cout << w << " in reverse is: " << endl;
+        printReverse(w);
+        cout << endl;
+    }
+}
+
+
+/// @brief Write a function that takes a container of Card unique_pointers 
+///        and demonstrates modern memory management.
+void Activity2()
+{
+    // Use unique_ptr to enforce exclusive ownership and automatic cleanup
+    vector<unique_ptr<Card>> hand;
+
+    // make_unique is the modern C++ standard for dynamic allocation
+    hand.push_back(make_unique<Card>("One", "Hearts", true));
+    hand.push_back(make_unique<Card>("Two", "Diamonds", true));
+    hand.push_back(make_unique<Card>("Three", "Spades", false));
+    hand.push_back(make_unique<Card>("Ace", "Clubs", false));
+    hand.push_back(make_unique<Card>("King", "Clubs", false));
+
+    cout << "Before Release: " << endl;
+    // Pass by const reference (const auto&) to view without taking ownership
+    for (const auto& c : hand)
+    {
+        if (c == nullptr)
+        {
+            continue;
+        }
+
+        cout << "   " << c->to_string() << endl;
+    }
+
+    // A custom releaseAll() function is no longer necessary.
+    // Clearing the vector automatically triggers the destructor for every Card.
+    hand.clear();
+
+    cout << "After Release: " << endl;
+    for (const auto& c : hand)
+    {
+        if (c == nullptr)
+        {
+            continue;
+        }
+        
+        cout << "   " << c->to_string() << endl;
+    }
+}
+
+
+/// @brief Write a function that takes a container of Card pointers and releases
+///         all the dynamically allocated cards from within the container.
+void Activity3()
+{
+    vector<Card*> hand;
+
+    hand.push_back(new Card("One", "Hearts", true));
+    hand.push_back(new Card("Two", "Diamonds", true));
+    hand.push_back(new Card("Three", "Spades", false));
+    hand.push_back(new Card("Ace", "Clubs", false));
+    hand.push_back(new Card("King", "Clubs", false));
+
+
+    cout << "Before Release: " << endl;
+    for (const Card* c : hand)
+    {
+        if (c == nullptr)
+        {
+            continue;
+        }
+
+        cout << "   " << c->to_string() << endl;
+    }
+
+    // This is the activity function being invoked.
+    releaseAll(hand);
+
+    cout << "After Release: " << endl;
+    for (const Card* c : hand)
+    {
+        // A null pointer (nullptr) means no valid memory address
+        // is stored at this index, and therefore we cannot dereference
+        // to utilize the Card object and its member functions.
+        
+        // Try: Comment this if statement and body out and see what happens.
+        if (c == nullptr)
+        {
+            continue;
+        }
+        
+        cout << "   " << c->to_string() << endl;
+    }
+}
+
+
+int main(int argc, char *argv[])
+{
+    // no second command line argument, run all examples
+    if (argc > 1 && isdigit(argv[1][0]))
+    {
+        switch (atoi(argv[1]))
+        {
+            case 1:
+                Activity1();
+                break;
+
+            case 2:
+                Activity2();
+                break;
+
+            case 3:
+                Activity3();
+                break;
+
+            default:
+                break;
+        }
+    }
+    else
+    {
+        cout << "Specify a case to execute, e.g. ./exeName 1" << endl;
+        cout << "If a.out is the executable we would use: ./a.out 1" << endl;
+    }
+    return 0;
+}
+
+/// @brief Print the string character by character recursively.
+/// @param s The string to print, passed as a lightweight string_view object.
+/// @param index The current index to print out. Defaults to zero.
+void printForward(string_view s, size_t index)
+{
+    // Base Case: There is nothing in the string to print.
+    if (s.empty())
+    {
+        return;
+    }
+
+    // Base Case: The index we want to print out is out of bounds/range.
+    if (index >= s.size())
+    {
+        return;
+    }
+
+    // Output the current index's element (character).
+    // The first time this executes will be after the base case returns.
+    // So index == size(), therefore returning to index-1 or the last element.
+    cout << s.at(index) << ' ';
+
+    // We want an newline after the last character to be output.
+    // Since we are going forward the last character is at size() - 1.
+    if (index+1 == s.size())
+    {
+        cout << endl;
+    }
+
+    // Move towards the base case of the end of the string.
+    printForward(s, index+1);
+}
+
+
+/// @brief Print the string in reverse character by character. 
+///     Implementation encapsulates whether we are doing an iterative or 
+///     recursive implementation as the user does not need to know that.
+/// @param s The string to print, passed as a lightweight string_view object.
+void printReverse(string_view s)
+{
+    // Depending on the size being odd or even, print recursively or 
+    // iteratively to demonstrate both working. You normally would not
+    // do this, but this helps show both working without code modification.
+    if (s.size() % 2 == 0)
+    {
+        printInReverse(s, 0);
+        cout << "    Used the recursive reverse print." << endl;
+    }
+    else
+    {
+        printInReverse(s);
+        cout << "    Used the iterative reverse print." << endl;
+    }
+}
+
+/// @brief Iterative implementation of printing a string in reverse.
+/// @param s The string to print sent as a lightweight string_view object.
+void printInReverse(string_view s)
+{
+    // Why can't we use size_t for this loop's iteration variable type?
+    for(int i = s.size() - 1; i >= 0; --i)
+    {
+        cout << s.at(i) << ' ';
+    }
+    cout << endl;
+}
+
+
+// Sum all even numbers from 1 to N recursively
+int sumEvens(int n)
+{
+    // base case: known solution/value
+    if(n <= 1)
+    {
+        return 0;
+    }
+
+
+    // if a number is even then recursively call and
+    // add the current number
+    if (n % 2 == 0)
+    {
+        return n + sumEvens(n-2);
+    }
+    // else
+    // { 
+    //     return 0 + sumEvens(n--);
+    // }
+
+    else
+    {
+        n--;
+        return n + sumEvens(n-2);
+    }
+
+}
