@@ -10,7 +10,7 @@ class Instrument {
         // ==========================================================
         string name = "";
         string manufacturer = "";
-        int yearBuilt = 0;
+        int yearBuilt = 1970;
         int cost = 0;
 
     public:
