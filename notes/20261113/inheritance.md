@@ -177,7 +177,7 @@ void Car::setup()
     // weight = 4000; 
 }
 
-// 2. Inside Outside Code (main.cpp)
+// 2. Inside Exterior Code (main.cpp)
 int main() 
 {
     Car myCar;
@@ -334,9 +334,9 @@ class Car : public Vehicle
 };
 ```
 
-## 10. Additional Nuances: Object Slicing and Downcasting
+## 10. Additional Nuances
 
-When working heavily with inheritance, there are two major concepts and pitfalls you must be aware of regarding how C++ handles objects in memory.
+When working heavily with inheritance, there are three major concepts and pitfalls you must be aware of regarding how C++ handles objects in memory.
 
 ### 1. Object Slicing
 
@@ -407,6 +407,33 @@ void inspectSmartVehicle(shared_ptr<Vehicle> vPtr)
 ```
 
 *(Note: `std::unique_ptr` cannot be downcasted easily because it enforces exclusive ownership, meaning you cannot create a second pointer to the same object. If downcasting is required, you usually extract the raw observing pointer using `.get()` and cast that instead).*
+
+### 3. The `explicit` Keyword (Preventing Accidental Conversions)
+
+In C++, if a constructor can be called with a single argument (like `Vehicle(string name)`), the compiler can use it to perform *implicit conversions*. This means if you write a function that expects a `Vehicle` object, a user could accidentally pass it a raw string like `"Mustang"`, and the compiler would silently build a temporary `Vehicle` behind the scenes to make the code compile!
+
+To prevent this potentially dangerous and confusing behavior, modern C++ guidelines highly recommend marking single-argument constructors as `explicit`.
+
+```cpp
+class Vehicle 
+{
+    public:
+        // 'explicit' prevents implicit conversion 
+        // from a string directly to a Vehicle
+        explicit Vehicle(string name) { /* ... */ }
+};
+
+void startEngine(Vehicle v) { /* ... */ }
+
+int main() 
+{
+    // COMPILER ERROR! (Good, this is what 'explicit' prevents)
+    // startEngine("Mustang"); 
+    
+    // CORRECT: You must intentionally build the Vehicle
+    startEngine(Vehicle("Mustang")); 
+}
+```
 
 ## 11. Introduction to Polymorphism
 
@@ -569,32 +596,169 @@ int main()
 }
 ```
 
-## 13. Another Example: The Instrument Family Tree
-
-To see another example of public inheritance beyond our vehicles, consider an `Instrument` base class. When we expand our base class into multiple specialized families, we create an inheritance hierarchy. Each derived class publicly inherits the core members from `Instrument` while maintaining its own distinct member variables.
+## 13. Another Example: The `Instrument` Family Tree
+To bring it all together, let's look a complete example using our 
+`Instrument` hierarchy. This demonstrates both the legacy C++ approach 
+(using raw pointers and manual memory management) and the modern C++ approach 
+(using smart pointers for automatic cleanup).
 
 ```mermaid
 classDiagram
     class Instrument {
-        -string name
-        -string manufacturer
-        -int yearBuilt
-        -int cost
+        #string name
+        #string manufacturer
+        #int yearBuilt
+        #int cost
+        +play()*
     }
     class Cello {
         -string bowType
+        +play()
     }
     class Trumpet {
         -string finish
+        +play()
     }
     class Flute {
         -string material
+        +play()
     }
     class SnareDrum {
         -string stickType
+        +play()
     }
     Instrument <|-- Cello : inherits
     Instrument <|-- Trumpet : inherits
     Instrument <|-- Flute : inherits
     Instrument <|-- SnareDrum : inherits
+```
+
+### The C++ Implementation
+Notice how the pure virtual `play()` function ensures `Instrument` is a strict 
+blueprint, while `main()` leverages polymorphism to treat all derived 
+instruments interchangeably.
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <memory>
+#include <string>
+
+using namespace std;
+
+// ==========================================================
+// Abstract Base Class
+// ==========================================================
+class Instrument 
+{
+    protected:
+        string name;
+        string manufacturer;
+        int yearBuilt;
+        int cost;
+
+    public:
+        Instrument(string nm, string manuf, int year, int cst)
+            : name(nm), manufacturer(manuf), yearBuilt(year), cost(cst) {}
+
+        virtual ~Instrument() = default;
+
+        // Pure virtual function forces derived classes to implement play()
+        virtual void play() const = 0; 
+};
+
+// ==========================================================
+// Derived Classes
+// ==========================================================
+class Cello : public Instrument 
+{
+    private:
+        string bowType;
+
+    public:
+        Cello(string nm, string manuf, int yr, int cst, string bow)
+            : Instrument(nm, manuf, yr, cst), bowType(bow) {}
+
+        void play() const override 
+        {
+            cout << name << " (Cello): Drawing the " << bowType 
+                 << " bow across the strings...\n";
+        }
+};
+
+class Trumpet : public Instrument 
+{
+    private:
+        string finish;
+
+    public:
+        Trumpet(string nm, string manuf, int yr, int cst, string fin)
+            : Instrument(nm, manuf, yr, cst), finish(fin) {}
+
+        void play() const override 
+        {
+            cout << name << " (Trumpet): Buzzing the mouthpiece of the " 
+                 << finish << " trumpet...\n";
+        }
+};
+
+// ==========================================================
+// Polymorphism Examples
+// ==========================================================
+
+void legacyRawPointerExample() 
+{
+    cout << "--- Legacy Raw Pointers ---\n";
+    vector<Instrument*> orchestra;
+    
+    // Allocating raw memory on the heap
+    orchestra.push_back(
+        new Cello("Stradivarius", "Stradivari", 1711, 2500000, "French")
+    );
+    orchestra.push_back(
+        new Trumpet("Model 37", "Vincent Bach", 2015, 3000, "Silver")
+    );
+
+    // Polymorphic dispatch
+    for (Instrument* inst : orchestra) 
+    {
+        inst->play();
+    }
+
+    // CRITICAL: We must manually free raw pointers to avoid memory leaks!
+    for (Instrument* inst : orchestra) 
+    {
+        delete inst;
+    }
+}
+
+void modernSmartPointerExample() 
+{
+    cout << "\n--- Modern Smart Pointers ---\n";
+    vector<unique_ptr<Instrument>> orchestra;
+    
+    // make_unique handles heap allocation safely
+    orchestra.push_back(
+        make_unique<Cello>("Stradivarius", "Stradivari", 1711, 250000, "French")
+    );
+    orchestra.push_back(
+        make_unique<Trumpet>("Model 37", "Vincent Bach", 2015, 3000, "Silver")
+    );
+
+    // Polymorphic dispatch
+    for (const auto& inst : orchestra) 
+    {
+        inst->play();
+    }
+    
+    // No delete loop needed! Memory frees automatically when vector is destroyed.
+}
+
+int main() 
+{
+    legacyRawPointerExample();
+    modernSmartPointerExample();
+    
+    return 0;
+}
 ```
