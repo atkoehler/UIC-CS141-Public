@@ -5,7 +5,7 @@ using namespace std;
 
 class Instrument 
 {
-    private:
+    protected:
         // ==========================================================
         // Private Member Variables
         // ==========================================================
@@ -59,6 +59,7 @@ class Instrument
         // Utility Methods
         // ==========================================================
         virtual void printInfo() const;
+        virtual void play() const = 0;
         
         // Returns a formatted string representation of the object.
         // Matches the C++ standard library naming convention.
