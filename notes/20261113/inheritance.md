@@ -121,34 +121,35 @@ classDiagram
         -int yearBuilt
         -int cost
     }
-    class StringInstrument {
-        -int numStrings
-        -bool isBowed
+    class Cello {
+        -string bowType
     }
-    class BrassInstrument {
-        -string mouthpieceType
-        -bool hasValves
+    class Trumpet {
+        -string finish
     }
-    class PercussionInstrument {
-        -bool isPitched
-        -bool usesMallets
+    class Flute {
+        -string material
     }
-    Instrument <|-- StringInstrument : inherits
-    Instrument <|-- BrassInstrument : inherits
-    Instrument <|-- PercussionInstrument : inherits
+    class SnareDrum {
+        -string stickType
+    }
+    Instrument <|-- Cello : inherits
+    Instrument <|-- Trumpet : inherits
+    Instrument <|-- Flute : inherits
+    Instrument <|-- SnareDrum : inherits
 ```
 
 ---
 
 ## 6. The Private Data Barrier
-In C++, inheriting from a class means the derived class object contains the base class's data in memory. However, **inheriting data does not mean having direct access to it.**
+In C++, inheriting from a class means the derived class object contains the base class's data in memory. However, **inheriting data does not mean having direct access to it**.
 
-In `instrument.h`, the member variables (`name`, `manufacturer`, `yearBuilt`, and `cost`) are marked `private`. Because they are `private`, **only** methods inside the `Instrument` class itself can read or modify them directly. Even a child class like `StringInstrument` is locked out.
+In `instrument.h`, the member variables (`name`, `manufacturer`, `yearBuilt`, and `cost`) are marked `private`. Because they are `private`, **only** methods inside the `Instrument` class itself can read or modify them directly. Even a child class like `Cello` is locked out.
 
 ### How Derived Classes Interact with Private Base Data
 ```cpp
-// Inside a StringInstrument method:
-void StringInstrument::updateDetails() 
+// Inside a Cello method:
+void Cello::updateDetails() 
 {
     // COMPILER ERROR! 'name' and 'cost' are private in Instrument.
     // name = "Stradivarius"; 
@@ -183,8 +184,8 @@ class Instrument
         int cost;    // Still strictly locked to Instrument only
 };
 
-// 1. Inside a Derived Class (StringInstrument.cpp)
-void StringInstrument::setup() 
+// 1. Inside a Derived Class (Cello.cpp)
+void Cello::setup() 
 {
     name = "Cello"; // ALLOWED! Derived classes can access 'protected' members.
     // cost = 500;  // COMPILER ERROR! 'cost' is still 'private'.
@@ -193,7 +194,7 @@ void StringInstrument::setup()
 // 2. Inside Outside Code (main.cpp)
 int main() 
 {
-    StringInstrument myCello;
+    Cello myCello;
     // myCello.name = "Cello"; // COMPILER ERROR! 'protected' is still hidden from main().
     // myCello.cost = 500;     // COMPILER ERROR! 'private' is hidden from main().
 }
