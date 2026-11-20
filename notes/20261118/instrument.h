@@ -59,6 +59,15 @@ class Instrument
         // Utility Methods
         // ==========================================================
         virtual void printInfo() const;
+
+        // Exploration: What happens when we remove =0?
+        // virtual void play() const;
+
+        // Exploration: What happens when we remove virtual?
+        // void play() const;
+        
+        // Pure virtual function states that the base class will not
+        // define this function but all derived classes must.
         virtual void play() const = 0;
         
         // Returns a formatted string representation of the object.

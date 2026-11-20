@@ -72,6 +72,7 @@ int Instrument::getCost() const
     return cost;
 }
 
+
 // ==========================================================
 // Utility Methods
 // ==========================================================
@@ -88,10 +89,13 @@ string Instrument::to_string() const
            ", Cost: $" + std::to_string(cost) + ")";
 }
 
-void Instrument::play() const
-{
-    cout << "The instrument is making noise." << endl;
-}
+// We do not define this because the instrument header has it set as a 
+// pure virtual function. So the base/parent class does not define it.
+// void Instrument::play() const
+// {
+//     cout << "The instrument is making noise." << endl;
+// }
+
 
 // ==========================================================
 // Operator Overloads
