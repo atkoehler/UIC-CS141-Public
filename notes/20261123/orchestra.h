@@ -25,14 +25,28 @@ class Orchestra
         unique_ptr<ChairNode> head; 
 
         // Raw observing pointer to the end of the list
-        ChairNode* tail;            
+        ChairNode* tail;     
+        
+        size_t chairs;
 
     public:
         Orchestra();
         ~Orchestra(); // Custom destructor to prevent stack overflow
         
-        void addFront(unique_ptr<Instrument> inst);
-        void addBack(unique_ptr<Instrument> inst);
+        // Acquire the size of the Linked List
+        size_t size() const;
+
+        // Interact with each item in the Linked List
         void playConcert() const;
         void printChairs() const;
+
+        // Insertion
+        void addBack(unique_ptr<Instrument> inst);
+        void addFront(unique_ptr<Instrument> inst);
+        void addAfter(unique_ptr<Instrument> inst, size_t location);
+
+    // Helper Functions
+    private:
+        // Selection Sort Helper
+        unique_ptr<ChairNode> extractMinimum();
 };
