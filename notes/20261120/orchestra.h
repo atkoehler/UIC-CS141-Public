@@ -33,5 +33,6 @@ class Orchestra
         
         void addFront(unique_ptr<Instrument> inst);
         void addBack(unique_ptr<Instrument> inst);
+        void printChairs() const;
         void playConcert() const;
 };
